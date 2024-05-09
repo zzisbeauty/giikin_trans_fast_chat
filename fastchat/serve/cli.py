@@ -83,10 +83,7 @@ class RichChatIO(ChatIO):
 
     def __init__(self, multiline: bool = False, mouse: bool = False):
         self._prompt_session = PromptSession(history=InMemoryHistory())
-        self._completer = WordCompleter(
-            words=["!!exit", "!!reset", "!!remove", "!!regen", "!!save", "!!load"],
-            pattern=re.compile("$"),
-        )
+        self._completer = WordCompleter(words=["!!exit", "!!reset", "!!remove", "!!regen", "!!save", "!!load"],pattern=re.compile("$"),)
         self._console = Console()
         self._multiline = multiline
         self._mouse = mouse
@@ -271,7 +268,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--temperature", type=float, default=0.7)
     parser.add_argument("--repetition_penalty", type=float, default=1.0)
-    parser.add_argument("--max-new-tokens", type=int, default=512)
+    parser.add_argument("--max-new-tokens", type=int, default=1024)
     parser.add_argument("--no-history", action="store_true")
     parser.add_argument(
         "--style",

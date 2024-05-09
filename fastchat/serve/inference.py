@@ -42,9 +42,7 @@ from fastchat.modules.xfastertransformer import XftConfig
 from fastchat.utils import is_partial_stop, is_sentence_complete, get_context_length
 
 
-def prepare_logits_processor(
-    temperature: float, repetition_penalty: float, top_p: float, top_k: int
-) -> LogitsProcessorList:
+def prepare_logits_processor(temperature: float, repetition_penalty: float, top_p: float, top_k: int) -> LogitsProcessorList:
     processor_list = LogitsProcessorList()
     # TemperatureLogitsWarper doesn't accept 0.0, 1.0 makes it a no-op so we skip two cases.
     if temperature >= 1e-5 and temperature != 1.0:
@@ -86,9 +84,7 @@ def generate_stream(
     if tokenizer.eos_token_id not in stop_token_ids:
         stop_token_ids.append(tokenizer.eos_token_id)
 
-    logits_processor = prepare_logits_processor(
-        temperature, repetition_penalty, top_p, top_k
-    )
+    logits_processor = prepare_logits_processor(temperature, repetition_penalty, top_p, top_k)
     input_ids = tokenizer(prompt).input_ids
 
     if model.config.is_encoder_decoder:
@@ -103,9 +99,7 @@ def generate_stream(
     if model.config.is_encoder_decoder:
         if logprobs is not None:  # FIXME: Support logprobs for encoder-decoder models.
             raise NotImplementedError
-        encoder_output = model.encoder(
-            input_ids=torch.as_tensor([input_ids], device=device)
-        )[0]
+        encoder_output = model.encoder(input_ids=torch.as_tensor([input_ids], device=device))[0]
         start_ids = torch.as_tensor(
             [[model.generation_config.decoder_start_token_id]],
             dtype=torch.int64,
@@ -138,9 +132,7 @@ def generate_stream(
                 shift_input_ids = start_ids[..., 1:].contiguous()
                 shift_logits = logits[..., :-1, :].contiguous()
                 shift_logits = torch.log_softmax(shift_logits, dim=-1).tolist()
-                for label_id, logit in zip(
-                    shift_input_ids[0].tolist(), shift_logits[0]
-                ):
+                for label_id, logit in zip(shift_input_ids[0].tolist(), shift_logits[0]):
                     token_logprobs.append(logit[label_id])
         else:  # decoding
             if model.config.is_encoder_decoder:
