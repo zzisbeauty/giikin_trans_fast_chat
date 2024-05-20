@@ -15,6 +15,10 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 
+import sys, os
+
+sys.path.append(os.getcwd())
+
 from dataclasses import dataclass, field
 import logging
 import pathlib
@@ -102,9 +106,7 @@ def get_peft_state_maybe_zero_3(named_params, bias):
 
 
 def train():
-    parser = transformers.HfArgumentParser(
-        (ModelArguments, DataArguments, TrainingArguments, LoraArguments)
-    )
+    parser = transformers.HfArgumentParser((ModelArguments, DataArguments, TrainingArguments, LoraArguments))
     (
         model_args,
         data_args,
