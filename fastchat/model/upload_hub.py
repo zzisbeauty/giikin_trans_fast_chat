@@ -16,6 +16,7 @@ def upload_hub(model_path, hub_repo_id, component, private):
         components = ["model", "tokenizer"]
     else:
         components = [component]
+        pass
 
     kwargs = {"push_to_hub": True, "repo_id": hub_repo_id, "private": args.private}
 
